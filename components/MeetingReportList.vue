@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Button } from "@/components/ui/button";
-import { Eye, Edit, Pencil, ChevronDown } from "lucide-vue-next";
+import { Eye, Edit, ChevronDown } from "lucide-vue-next";
 import type { Report } from "~/types/markdownTypes";
 import {
   Card,
@@ -14,6 +14,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { Input } from "@/components/ui/input";
 import ReportSummary from "./ReportSummary.vue";
 import { ref, computed, watch } from "vue";
 import Pagination from "./Pagination.vue";
@@ -39,6 +40,24 @@ const handleCreateNew = () => {
 
 const { height: windowHeight } = useWindowSize();
 
+const search = ref("");
+const ODJ_SEPARATOR = "\n\n---ODJ_SEPARATOR---\n\n";
+
+const filteredReports = computed(() => {
+  if (!search.value.trim()) return props.reports;
+  const searchTerm = search.value.trim().toLowerCase();
+  return props.reports.filter((report) => {
+    const title = report.title?.toLowerCase() || "";
+    const content = report.content?.toLowerCase() || "";
+    const [odj = "", body = ""] = content.split(ODJ_SEPARATOR);
+    return (
+      title.includes(searchTerm) ||
+      odj.includes(searchTerm) ||
+      body.includes(searchTerm)
+    );
+  });
+});
+
 const reportsPerPage = computed(() => {
   const headerHeight = 180;
   const paginationHeight = 70;
@@ -55,11 +74,11 @@ const reportsPerPage = computed(() => {
 const currentPage = ref(1);
 
 const totalPages = computed(() =>
-  Math.ceil(props.reports.length / reportsPerPage.value)
+  Math.ceil(filteredReports.value.length / reportsPerPage.value)
 );
 const paginatedReports = computed(() => {
   const start = (currentPage.value - 1) * reportsPerPage.value;
-  return props.reports.slice(start, start + reportsPerPage.value);
+  return filteredReports.value.slice(start, start + reportsPerPage.value);
 });
 
 watch(reportsPerPage, () => {
@@ -83,9 +102,18 @@ watch(reportsPerPage, () => {
       >
     </div>
 
-    <!-- Reports list with flex-grow to take available space -->
-    <div class="space-y-4 flex-grow overflow-y-auto">
-      <Card v-if="props.reports.length === 0">
+    <!-- Research field -->
+    <div class="mb-4 flex justify-center">
+      <Input
+        v-model="search"
+        type="text"
+        placeholder="Rechercher dans les rapports, ODJ ou contenu…"
+        class="px-4 py-2 rounded border w-full sm:w-1/2 bg-background text-foreground"
+      />
+    </div>
+
+    <div class="space-y-2 flex-grow overflow-y-auto w-full mx-auto">
+      <Card v-if="filteredReports.length === 0">
         <CardContent class="pt-6">
           <p>Aucun rapport trouvé. Créez-en un nouveau !</p>
         </CardContent>
@@ -93,17 +121,17 @@ watch(reportsPerPage, () => {
 
       <div v-for="report in paginatedReports" :key="report.id">
         <Collapsible>
-          <Card class="group">
-            <CardHeader>
+          <Card class="group py-3 px-6">
+            <CardHeader class="py-3 px-0">
               <div class="flex items-center gap-x-2">
-                <CardTitle class="text-lg sm:text-2xl break-words">{{
-                  report.title
-                }}</CardTitle>
+                <CardTitle class="text-lg sm:text-xl break-words">
+                  {{ report.title }}
+                </CardTitle>
               </div>
             </CardHeader>
             <CardDescription>
               <div
-                class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 px-2 sm:px-6 mb-4"
+                class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-1 sm:px-2 mb-3"
               >
                 <div class="text-sm sm:text-base">
                   <span class="block sm:inline">
@@ -111,7 +139,6 @@ watch(reportsPerPage, () => {
                     {{ new Date(report.createdAt).toLocaleDateString() }}
                   </span>
                 </div>
-
                 <div
                   class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2"
                 >
