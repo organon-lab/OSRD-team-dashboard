@@ -46,6 +46,13 @@ export default defineNuxtConfig({
       },
     },
   },
+    mdc: {
+    highlight: {
+      theme: "github-dark",
+      langs: ["js", "ts"],
+      wrapperStyle: true,
+    },
+  },
   devtools: { enabled: true },
   experimental: {
     componentIslands: true,
