@@ -138,7 +138,7 @@ defineExpose({ savePost });
         <label
           for="report-odj"
           class="block mb-2 text-sm font-medium text-muted-foreground"
-          >ODJ (Ordre du Jour)</label
+          >Ordre du Jour (ODJ)</label
         >
         <Textarea
           id="report-odj"
