@@ -39,15 +39,11 @@ const sortedIssues = issues.sort((a, b) => {
 
 <template>
   <div class="h-full w-full flex flex-col">
-    <div
-      class="flex-1 border border-border bg-card shadow-md overflow-y-auto"
-    >
+    <div class="flex-1 border border-border bg-card shadow-md overflow-y-auto">
       <table
         class="min-w-full w-full table-fixed text-sm text-left text-foreground"
       >
-        <thead
-          class="sticky top-0 z-10 backdrop-blur border-b border-border"
-        >
+        <thead class="sticky top-0 z-10 backdrop-blur border-b border-border">
           <tr>
             <th
               class="p-3 font-semibold w-24 text-center border-r border-border"
@@ -98,7 +94,7 @@ const sortedIssues = issues.sort((a, b) => {
             </td>
             <td class="p-3 text-center w-32 border-r border-border">
               <span
-                class="bg-stone-800 rounded-full px-2 py-1 font-medium"
+                class="rounded-full px-2 py-1 font-medium bg-stone-200 dark:bg-stone-800"
                 :class="{
                   'text-red-500': issue.labels.some((label) =>
                     label.name.includes('critical')
