@@ -33,17 +33,3 @@ model Task {
   user      User    @relation(fields: [userId], references: [id])
   userId    Int
 }
-
-model Issues {
-  id        Int
-  title     String
-  labels    String[]
-  createdAt String
-  html_url  String
-}
-
-model PullRequests {
-  id        Int
-  name	    String
-  count     Int
-}
