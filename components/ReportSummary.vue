@@ -45,7 +45,7 @@ watch(
   <div class="p-6 pt-0">
     <div class="border-t pt-4">
       <div v-if="parsedOdj && parsedOdj.body" class="markdown">
-        <h2>Voici les ODJ :</h2>
+        <h2>Voici l'ODJ :</h2>
         <MDCRenderer :body="parsedOdj.body" :data="parsedOdj.data" />
       </div>
       <p v-else class="text-sm text-muted-foreground italic">
