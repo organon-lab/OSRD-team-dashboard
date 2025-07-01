@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { ListTodo, Plus, X } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
@@ -89,12 +90,12 @@ const handleRemoveIssue = (idx: number) => {
       <DialogHeader>
         <DialogTitle>Nouveau sujet front</DialogTitle>
       </DialogHeader>
-      <input
+      <Input
         v-model="newIssue"
         @keyup.enter="handleAddIssue"
         type="text"
         placeholder="Décris la problématique..."
-        class="border rounded px-3 py-2 mt-2 focus:outline-none focus:ring text-black"
+        class="px-3 py-2 mt-2 focus:outline-none focus:ring"
         autofocus
       />
       <DialogFooter>
